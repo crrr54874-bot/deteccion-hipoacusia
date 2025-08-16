@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Detección Temprana - Protocolo 1-3-6 Colombia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+   </head>
+<body>
+    <div class="header text-center mb-5">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4"><i class="fas fa-ear-listen me-3"></i>Sistema de Detección Temprana de Hipoacusia Neonatal</h1>
+            <p class="lead fs-4">Protocolo 1-3-6 - Ley 1980 de 2019 - Resolución 207 de 2024</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <!-- Tarjeta de Protocolo 1-3-6 -->
+                <div class="protocol-card pulse">
+                    <h2 class="mb-4 text-center"><i class="fas fa-clipboard-list protocol-icon"></i>Protocolo 1-3-6 de Colombia</h2>
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="step-badge">1</span>
+                        <div>
+                            <h4 class="mb-1">Primer tamizaje</h4>
+                            <p class="mb-0 fs-5">Antes de 1 mes de vida</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="step-badge">3</span>
+                        <div>
+                            <h4 class="mb-1">Diagnóstico confirmado</h4>
+                            <p class="mb-0 fs-5">Antes de los 3 meses</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="step-badge">6</span>
+                        <div>
+                            <h4 class="mb-1">Intervención temprana</h4>
+                            <p class="mb-0 fs-5">Antes de los 6 meses</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de Evaluación -->
+                <div class="card shadow-sm mb-5">
+                    <div class="card-header">
+                        <h3 class="mb-0"><i class="fas fa-stethoscope me-2"></i>Evaluación de Riesgo Auditivo</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label for="edadBebe" class="form-label"><i class="fas fa-baby me-2"></i>Edad actual del bebé (meses):</label>
+                            <input type="number" class="form-control form-control-lg" id="edadBebe" min="0" max="24" value="0">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="tipoExamen" class="form-label"><i class="fas fa-file-medical me-2"></i>Tipo de examen auditivo realizado:</label>
+                            <select class="form-select form-select-lg" id="tipoExamen" onchange="mostrarResultadoExamen()">
+                                <option value="">Seleccione el tipo de examen</option>
+                                <option value="oae">OAE (Otoemisiones Acústicas)</option>
+                                <option value="aabr">AABR (Respuesta Auditiva del Tronco Cerebral)</option>
+                            </select>
+                        </div>
+
+                        <div id="resultadoOAE" class="mb-4" style="display: none;">
+                            <label for="oae" class="form-label"><i class="fas fa-wave-square me-2"></i>Resultado OAE:</label>
+                            <select class="form-select form-select-lg" id="oae">
+                                <option value="">Seleccione el resultado</option>
+                                <option value="pasa">Pasa</option>
+                                <option value="parcial">Parcial</option>
+                                <option value="no_pasa">No pasa</option>
+                            </select>
+                        </div>
+
+                        <div id="resultadoAABR" class="mb-4" style="display: none;">
+                            <label for="aabr" class="form-label"><i class="fas fa-brain me-2"></i>Resultado AABR:</label>
+                            <select class="form-select form-select-lg" id="aabr">
+                                <option value="">Seleccione el resultado</option>
+                                <option value="normal">Normal</option>
+                                <option value="anormal">Anormal</option>
+                                <option value="inconcluso">Inconcluso</option>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="prematuridad" class="form-label"><i class="fas fa-clock me-2"></i>Nivel de Prematuridad:</label>
+                                <select class="form-select" id="prematuridad">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="termino_completo">Término completo</option>
+                                    <option value="moderado">Moderado</option>
+                                    <option value="extremo">Extremo</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="antecedentes" class="form-label"><i class="fas fa-users me-2"></i>Antecedentes familiares:</label>
+                                <select class="form-select" id="antecedentes">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="si">Sí</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="infecciones" class="form-label"><i class="fas fa-virus me-2"></i>Infecciones prenatales:</label>
+                                <select class="form-select" id="infecciones">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="si">Sí</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="ototoxicos" class="form-label"><i class="fas fa-pills me-2"></i>Medicamentos ototóxicos:</label>
+                                <select class="form-select" id="ototoxicos">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="si">Sí</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="ucin" class="form-label"><i class="fas fa-procedures me-2"></i>Ingreso en UCIN:</label>
+                                <select class="form-select" id="ucin">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="si">Sí</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-5">
+                            <button class="btn btn-evaluar text-white" onclick="evaluarRiesgo()">
+                                <i class="fas fa-search me-2"></i>Evaluar Riesgo Auditivo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resultados (inicialmente oculto) -->
+                <div id="resultado" class="card shadow-lg mb-5" style="display: none;">
+                    <div class="card-body">
+                        <div class="risk-percentage text-center" id="valorRiesgo"></div>
+                        <div class="fs-5 mb-4 text-center" id="recomendacion"></div>
+                        
+                        <div class="visualization mb-5 fade-in">
+                            <div class="fuzzy-bar">
+                                <div class="risk-indicator" id="riskIndicator"></div>
+                            </div>
+                            <div class="risk-labels">
+                                <div class="risk-label-bajo">Bajo (0-15%)</div>
+                                <div class="risk-label-medio">Medio (16-45%)</div>
+                                <div class="risk-label-alto">Alto (46-100%)</div>
+                            </div>
+                        </div>
+                        
+                        <h4 class="mb-3"><i class="fas fa-list-check me-2"></i>Factores evaluados:</h4>
+                        <div id="factores" class="d-flex flex-wrap mb-4"></div>
+                        
+                        <div id="accionesProtocolo" class="mt-4"></div>
+                        
+                        <div class="risk-explanation fade-in">
+                            <h5><i class="fas fa-chart-line me-2"></i>Interpretación del riesgo:</h5>
+                            <p class="mb-2"><span class="risk-level risk-level-bajo">Bajo (0-15%):</span> Bebé con bajo riesgo de hipoacusia. Seguimiento rutinario.</p>
+                            <p class="mb-2"><span class="risk-level risk-level-medio">Medio (16-45%):</span> Requiere seguimiento estrecho y nuevas evaluaciones.</p>
+                            <p class="mb-0"><span class="risk-level risk-level-alto">Alto (46-100%):</span> Alta probabilidad de hipoacusia. Acción inmediata requerida.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recursos y Contactos -->
+                <div class="card shadow-sm mb-5">
+                    <div class="card-header">
+                        <h3 class="mb-0"><i class="fas fa-hands-helping me-2"></i>Recursos y Contactos de Apoyo</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="contact-card">
+                                    <h5><i class="fas fa-university me-2"></i>INSOR - Instituto Nacional para Sordos</h5>
+                                    <p class="mb-1"><strong><i class="fas fa-phone me-2"></i>Teléfono:</strong> (601) 593 7676</p>
+                                    <p class="mb-0"><strong><i class="fas fa-globe me-2"></i>Sitio web:</strong> www.insor.gov.co</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="contact-card">
+                                    <h5><i class="fas fa-landmark me-2"></i>Ministerio de Salud y Protección Social</h5>
+                                    <p class="mb-1"><strong><i class="fas fa-phone me-2"></i>Línea de atención:</strong> 018000910090</p>
+                                    <p class="mb-0"><strong><i class="fas fa-globe me-2"></i>Sitio web:</strong> www.minsalud.gov.co</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="contact-card">
+                                    <h5><i class="fas fa-stethoscope me-2"></i>Asociación Colombiana de Otorrinolaringología</h5>
+                                    <p class="mb-1"><strong><i class="fas fa-phone me-2"></i>Teléfono:</strong> (601) 743 6161</p>
+                                    <p class="mb-0"><strong><i class="fas fa-globe me-2"></i>Sitio web:</strong> www.asocorl.org</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="contact-card">
+                                    <h5><i class="fas fa-assistive-listening-systems me-2"></i>Fonoaudiología Colombiana</h5>
+                                    <p class="mb-1"><strong><i class="fas fa-phone me-2"></i>Teléfono:</strong> (601) 742 8282</p>
+                                    <p class="mb-0"><strong><i class="fas fa-globe me-2"></i>Sitio web:</strong> www.colfoniaudio.org</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h4 class="mt-4"><i class="fas fa-lightbulb me-2"></i>Recomendaciones para padres:</h4>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="fas fa-check-circle me-2 text-success"></i>Observe la reacción de su bebé ante sonidos fuertes</li>
+                            <li class="list-group-item"><i class="fas fa-check-circle me-2 text-success"></i>Hable con su bebé frecuentemente para estimular el desarrollo del lenguaje</li>
+                            <li class="list-group-item"><i class="fas fa-check-circle me-2 text-success"></i>Asista a todos los controles pediátricos programados</li>
+                            <li class="list-group-item"><i class="fas fa-check-circle me-2 text-success"></i>Solicite el tamizaje auditivo antes del primer mes de vida</li>
+                        </ul>
+                        
+                        <div class="alert alert-warning mt-4">
+                            <h5><i class="fas fa-exclamation-triangle me-2"></i>¿Problemas con su EPS?</h5>
+                            <ul class="mb-0">
+                                <li><i class="fas fa-file-alt me-2"></i>Presente derecho de petición solicitando acción inmediata</li>
+                                <li><i class="fas fa-file-medical me-2"></i>Solicite copia de historia clínica completa</li>
+                                <li><i class="fas fa-headset me-2"></i>Acuda a la SuperSalud: Línea 018000910090</li>
+                                <li><i class="fas fa-gavel me-2"></i>Considere acción de tutela si hay riesgo de perjuicio irremediable</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-1">Sistema de Detección Temprana de Hipoacusia Neonatal - Colombia</p>
+            <p class="mb-0">Ley 1980 de 2019 - Resolución 207 de 2024</p>
+            <p class="mt-3"><i class="fas fa-heart text-danger"></i> Protegiendo la audición de nuestros niños <i class="fas fa-heart text-danger"></i></p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
