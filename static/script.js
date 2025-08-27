@@ -113,6 +113,36 @@ function evaluarRiesgo() {
             accionesProtocolo += `<div class="alert alert-success">✅ Protocolo completado.</div>`;
         }
     }
+___________
+
+    // --- Reglas adicionales específicas ---
+if (edadBebe === 12 && tipoExamen === 'oae' && oae === 'pasa') {
+    accionesProtocolo += `<div class="alert alert-info">
+        📅 El bebé tiene 1 año y pasó el OAE. Se recomienda regresar en 3 meses para evaluar evolución.
+    </div>`;
+}
+
+if (edadBebe === 24 && tipoExamen === 'oae' && oae === 'no_pasa') {
+    accionesProtocolo += `<div class="alert alert-warning">
+        📌 El niño tiene 2 años y no pasó el OAE. Se recomienda realizar un segundo examen en 3 meses.
+    </div>`;
+}
+
+if (edadBebe === 3 && tipoExamen === 'oae' && oae === 'no_pasa') {
+    accionesProtocolo += `<div class="alert alert-warning">
+        ⚠️ Tiene 3 meses y no pasó el OAE. Debe realizarse un AABR inmediatamente, sin importar otros factores.
+    </div>`;
+}
+
+if (edadBebe >= 36 && edadBebe <= 60 && tipoExamen === 'aabr' && aabr === 'anormal') {
+    accionesProtocolo += `<div class="alert alert-danger">
+        🚨 El niño tiene entre 3 y 5 años y no pasó el AABR. Requiere acciones inmediatas con fonoaudiología.
+    </div>`;
+}
+
+
+_______________
+    
 
     accionesProtocolo += `</div></div>`;
 
