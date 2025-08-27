@@ -112,7 +112,7 @@ function evaluarRiesgo() {
         } else {
             accionesProtocolo += `<div class="alert alert-success">✅ Protocolo completado.</div>`;
         }
-    }
+    
 ___________
 
     // --- Reglas adicionales específicas ---
@@ -140,6 +140,7 @@ if (edadBebe >= 36 && edadBebe <= 60 && tipoExamen === 'aabr' && aabr === 'anorm
     </div>`;
 }
 
+}
 
 _______________
     
