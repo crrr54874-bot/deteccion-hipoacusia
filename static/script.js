@@ -95,26 +95,10 @@ function evaluarRiesgo() {
 
     // --- Protocolo 1-3-6 (corregido) ---
     let accionesProtocolo = '<div class="card action-card mb-4"><div class="card-body"><h4 class="card-title"><i class="fas fa-tasks me-2"></i>📋 Acciones Requeridas por Protocolo 1-3-6</h4>';
-
-    // 🔴 Revisión de riesgo primero
-    if (porcentajeRiesgo > 45) {
-        accionesProtocolo += `<div class="alert alert-danger">🚨 ALTO RIESGO: Requiere evaluación audiológica inmediata sin importar edad ni resultado del examen.</div>`;
-    } else if (porcentajeRiesgo >= 16) {
-        accionesProtocolo += `<div class="alert alert-warning">⚠️ Riesgo medio: debe repetirse evaluación y mantener seguimiento estrecho.</div>`;
-    } else {
-        // 🟢 Solo si es bajo riesgo, aplicamos las reglas por edad
-        if (edadBebe < 1) {
-            accionesProtocolo += `<div class="alert alert-success">✅ Primer tamizaje cumplido con resultado normal.</div>`;
-        } else if (edadBebe <= 3) {
-            accionesProtocolo += `<div class="alert alert-success">✅ El bebé está dentro del protocolo adecuado. Seguimiento rutinario.</div>`;
-        } else if (edadBebe <= 6) {
-            accionesProtocolo += `<div class="alert alert-success">✅ Protocolo cumplido, continuar seguimiento.</div>`;
-        } else {
-            accionesProtocolo += `<div class="alert alert-success">✅ Protocolo completado.</div>`;
-        }
  
     
-        // --- Reglas adicionales específicas (solo si riesgo ≤ 45%) ---
+    
+    // --- Reglas adicionales específicas (solo si riesgo ≤ 45%) ---
         if (edadBebe === 12 && tipoExamen === 'oae' && oae === 'pasa') {
             accionesProtocolo += `<div class="alert alert-info">
                 📅 El bebé tiene 1 año y pasó el OAE. Se recomienda regresar en 3 meses para evaluar evolución.
@@ -138,6 +122,30 @@ function evaluarRiesgo() {
                 🚨 El niño tiene entre 3 y 5 años y no pasó el AABR. Requiere acciones inmediatas con fonoaudiología.
             </div>`;
         }
+
+
+    
+
+
+    
+    // 🔴 Revisión de riesgo primero
+    if (porcentajeRiesgo > 45) {
+        accionesProtocolo += `<div class="alert alert-danger">🚨 ALTO RIESGO: Requiere evaluación audiológica inmediata sin importar edad ni resultado del examen.</div>`;
+    } else if (porcentajeRiesgo >= 16) {
+        accionesProtocolo += `<div class="alert alert-warning">⚠️ Riesgo medio: debe repetirse evaluación y mantener seguimiento estrecho.</div>`;
+    } else {
+        // 🟢 Solo si es bajo riesgo, aplicamos las reglas por edad
+        if (edadBebe < 1) {
+            accionesProtocolo += `<div class="alert alert-success">✅ Primer tamizaje cumplido con resultado normal.</div>`;
+        } else if (edadBebe <= 3) {
+            accionesProtocolo += `<div class="alert alert-success">✅ El bebé está dentro del protocolo adecuado. Seguimiento rutinario.</div>`;
+        } else if (edadBebe <= 6) {
+            accionesProtocolo += `<div class="alert alert-success">✅ Protocolo cumplido, continuar seguimiento.</div>`;
+        } else {
+            accionesProtocolo += `<div class="alert alert-success">✅ Protocolo completado.</div>`;
+        }
+ 
+    
     }
 
 
