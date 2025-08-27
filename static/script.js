@@ -121,20 +121,9 @@ function evaluarRiesgo() {
             accionesProtocolo += `<div class="alert alert-danger">
                 🚨 El niño tiene entre 3 y 5 años y no pasó el AABR. Requiere acciones inmediatas con fonoaudiología.
             </div>`;
-        }
-
-
+        } 
     
-
-
-    
-    // 🔴 Revisión de riesgo primero
-    if (porcentajeRiesgo > 45) {
-        accionesProtocolo += `<div class="alert alert-danger">🚨 ALTO RIESGO: Requiere evaluación audiológica inmediata sin importar edad ni resultado del examen.</div>`;
-    } else if (porcentajeRiesgo >= 16) {
-        accionesProtocolo += `<div class="alert alert-warning">⚠️ Riesgo medio: debe repetirse evaluación y mantener seguimiento estrecho.</div>`;
-    } else {
-        // 🟢 Solo si es bajo riesgo, aplicamos las reglas por edad
+    // 🟢 Solo si es bajo riesgo, aplicamos las reglas por edad
         if (edadBebe < 1) {
             accionesProtocolo += `<div class="alert alert-success">✅ Primer tamizaje cumplido con resultado normal.</div>`;
         } else if (edadBebe <= 3) {
