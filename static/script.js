@@ -101,8 +101,9 @@ function evaluarRiesgo() {
         recomendacion = 'Riesgo alto: acción inmediata requerida.';
     }
 
-    // --- Protocolo 1-3-6 (corregido + reglas nuevas para OAE y AABR) ---
-    let accionesProtocolo = '<div class="card action-card mb-4"><div class="card-body"><h4 class="card-title"><i class="fas fa-tasks me-2"></i>📋 Acciones Requeridas por Protocolo 1-3-6</h4>';
+    // --- Protocolo 1-3-6 con recomendaciones integradas ---
+    let accionesProtocolo = '<div class="card action-card mb-4"><div class="card-body">';
+    accionesProtocolo += `<h4 class="card-title"><i class="fas fa-tasks me-2"></i>📋 Acciones Requeridas por Protocolo 1-3-6</h4>`;
 
     // 🔴 Revisión de riesgo primero
     if (porcentajeRiesgo > 45) {
@@ -110,85 +111,63 @@ function evaluarRiesgo() {
     } else if (porcentajeRiesgo >= 16) {
         accionesProtocolo += `<div class="alert alert-warning">⚠️ Riesgo medio: debe repetirse evaluación y mantener seguimiento estrecho.</div>`;
     } else {
-        // 🟢 Solo si es bajo riesgo, aplicamos las reglas por edad
+        // 🟢 Bajo riesgo: reglas por edad
         if (edadBebe < 1) {
             accionesProtocolo += `<div class="alert alert-success">✅ Primer tamizaje cumplido con resultado normal.</div>`;
         } else if (edadBebe <= 3) {
-            accionesProtocolo += `<div class="alert alert-success">✅ El bebé está dentro del protocolo adecuado. Seguimiento rutinario.</div>`;
+            accionesProtocolo += `<div class="alert alert-success">✅ Dentro del protocolo adecuado. Seguimiento rutinario.</div>`;
         } else if (edadBebe <= 6) {
             accionesProtocolo += `<div class="alert alert-success">✅ Protocolo cumplido, continuar seguimiento.</div>`;
         } else {
             accionesProtocolo += `<div class="alert alert-success">✅ Protocolo completado.</div>`;
         }
 
-        // --- Reglas adicionales específicas aplicadas a OAE y AABR ---
+        // --- Reglas adicionales por edad y examen ---
         if (edadBebe === 12 && (
             (tipoExamen === 'oae' && oae === 'pasa') ||
             (tipoExamen === 'aabr' && aabr === 'normal')
         )) {
-            accionesProtocolo += `<div class="alert alert-info">
-                📅 Tiene 1 año y pasó el examen (${tipoExamen.toUpperCase()}). Se recomienda regresar en 3 meses para evaluar evolución.
-            </div>`;
+            accionesProtocolo += `<div class="alert alert-info">📅 Tiene 1 año y pasó el examen (${tipoExamen.toUpperCase()}). Recomendación: regresar en 3 meses para evaluar evolución.</div>`;
         }
 
         if (edadBebe === 24 && (
             (tipoExamen === 'oae' && oae === 'no_pasa') ||
             (tipoExamen === 'aabr' && aabr === 'anormal')
         )) {
-            accionesProtocolo += `<div class="alert alert-warning">
-                📌 Tiene 2 años y no pasó el examen (${tipoExamen.toUpperCase()}). Se recomienda realizar un segundo examen en 3 meses.
-            </div>`;
+            accionesProtocolo += `<div class="alert alert-warning">📌 Tiene 2 años y no pasó el examen (${tipoExamen.toUpperCase()}). Recomendación: realizar un segundo examen en 3 meses.</div>`;
         }
 
         if (edadBebe === 3 && (
             (tipoExamen === 'oae' && oae === 'no_pasa') ||
             (tipoExamen === 'aabr' && aabr === 'anormal')
         )) {
-            accionesProtocolo += `<div class="alert alert-warning">
-                ⚠️ Tiene 3 meses y no pasó el examen (${tipoExamen.toUpperCase()}). Debe realizarse un AABR inmediatamente.
-            </div>`;
+            accionesProtocolo += `<div class="alert alert-warning">⚠️ Tiene 3 meses y no pasó el examen (${tipoExamen.toUpperCase()}). Recomendación: realizar AABR inmediatamente.</div>`;
         }
 
         if (edadBebe >= 36 && edadBebe <= 60 && tipoExamen === 'aabr' && aabr === 'anormal') {
-            accionesProtocolo += `<div class="alert alert-danger">
-                🚨 El niño tiene entre 3 y 5 años y no pasó el AABR. Requiere acciones inmediatas con fonoaudiología.
-            </div>`;
+            accionesProtocolo += `<div class="alert alert-danger">🚨 Tiene entre 3 y 5 años y no pasó el AABR. Requiere acciones inmediatas con fonoaudiología.</div>`;
         }
     }
 
-    accionesProtocolo += `</div></div>`;
-
-    // --- Recomendaciones adicionales (independientes del protocolo) ---
-    let recomendacionesExtras = '<div class="card action-card mt-3"><div class="card-body">';
-    recomendacionesExtras += `<h5><i class="fas fa-lightbulb me-2"></i>💡 Recomendaciones adicionales</h5>`;
-
-    // Si pasó examen pero tiene factores de riesgo
+    // 🔹 Recomendaciones adicionales integradas aquí mismo
     if (((tipoExamen === 'oae' && oae === 'pasa') || (tipoExamen === 'aabr' && aabr === 'normal')) &&
         (antecedentes === 'si' || infecciones === 'si' || ototoxicos === 'si' || ucin === 'si')) {
-        recomendacionesExtras += `<div class="alert alert-info">
-            Aunque pasó el examen, existen factores de riesgo. Se recomienda seguimiento auditivo cada 6 meses hasta los 3 años.
-        </div>`;
+        accionesProtocolo += `<div class="alert alert-info">ℹ️ Aunque pasó el examen, existen factores de riesgo. Recomendación: seguimiento auditivo cada 6 meses hasta los 3 años.</div>`;
     }
 
-    // Si el resultado fue parcial o inconcluso
     if ((tipoExamen === 'oae' && oae === 'parcial') || (tipoExamen === 'aabr' && aabr === 'inconcluso')) {
-        recomendacionesExtras += `<div class="alert alert-warning">
-            El resultado es parcial/inconcluso. Repetir examen en 2–4 semanas para confirmar diagnóstico.
-        </div>`;
+        accionesProtocolo += `<div class="alert alert-warning">⚠️ Resultado parcial/inconcluso. Recomendación: repetir examen en 2–4 semanas para confirmar diagnóstico.</div>`;
     }
 
-    // Siempre mostrar signos de alarma para padres
-    recomendacionesExtras += `<div class="alert alert-secondary">
-        👶 Signos de alarma: No responde a sonidos fuertes a los 3 meses, no balbucea a los 6 meses, no reconoce su nombre a los 9 meses, no dice palabras simples al año.
-    </div>`;
+    accionesProtocolo += `<div class="alert alert-secondary">👶 Signos de alarma: No responde a sonidos fuertes (3 meses), no balbucea (6 meses), no reconoce su nombre (9 meses), no dice palabras simples (12 meses).</div>`;
 
-    recomendacionesExtras += `</div></div>`;
+    accionesProtocolo += `</div></div>`;
 
     // Mostrar resultados
     document.getElementById('valorRiesgo').textContent = `${porcentajeRiesgo}% - RIESGO ${nivelRiesgo}`;
     document.getElementById('recomendacion').textContent = recomendacion;
     document.getElementById('factores').innerHTML = factoresRiesgo.join('');
-    document.getElementById('accionesProtocolo').innerHTML = accionesProtocolo + recomendacionesExtras;
+    document.getElementById('accionesProtocolo').innerHTML = accionesProtocolo;
 
     const resultadoDiv = document.getElementById('resultado');
     resultadoDiv.className = `card shadow-lg ${claseCSS} fade-in`;
