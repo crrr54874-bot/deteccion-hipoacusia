@@ -101,7 +101,7 @@ function evaluarRiesgo() {
         recomendacion = 'Riesgo alto: acción inmediata requerida.';
     }
 
-    // --- Protocolo 1-3-6 (corregido + reglas nuevas) ---
+    // --- Protocolo 1-3-6 (corregido + reglas nuevas para OAE y AABR) ---
     let accionesProtocolo = '<div class="card action-card mb-4"><div class="card-body"><h4 class="card-title"><i class="fas fa-tasks me-2"></i>📋 Acciones Requeridas por Protocolo 1-3-6</h4>';
 
     // 🔴 Revisión de riesgo primero
@@ -121,22 +121,31 @@ function evaluarRiesgo() {
             accionesProtocolo += `<div class="alert alert-success">✅ Protocolo completado.</div>`;
         }
 
-        // --- Reglas adicionales específicas (solo si riesgo ≤ 45%) ---
-        if (edadBebe === 12 && tipoExamen === 'oae' && oae === 'pasa') {
+        // --- Reglas adicionales específicas aplicadas a OAE y AABR ---
+        if (edadBebe === 12 && (
+            (tipoExamen === 'oae' && oae === 'pasa') ||
+            (tipoExamen === 'aabr' && aabr === 'normal')
+        )) {
             accionesProtocolo += `<div class="alert alert-info">
-                📅 El bebé tiene 1 año y pasó el OAE. Se recomienda regresar en 3 meses para evaluar evolución.
+                📅 Tiene 1 año y pasó el examen (${tipoExamen.toUpperCase()}). Se recomienda regresar en 3 meses para evaluar evolución.
             </div>`;
         }
 
-        if (edadBebe === 24 && tipoExamen === 'oae' && oae === 'no_pasa') {
+        if (edadBebe === 24 && (
+            (tipoExamen === 'oae' && oae === 'no_pasa') ||
+            (tipoExamen === 'aabr' && aabr === 'anormal')
+        )) {
             accionesProtocolo += `<div class="alert alert-warning">
-                📌 El niño tiene 2 años y no pasó el OAE. Se recomienda realizar un segundo examen en 3 meses.
+                📌 Tiene 2 años y no pasó el examen (${tipoExamen.toUpperCase()}). Se recomienda realizar un segundo examen en 3 meses.
             </div>`;
         }
 
-        if (edadBebe === 3 && tipoExamen === 'oae' && oae === 'no_pasa') {
+        if (edadBebe === 3 && (
+            (tipoExamen === 'oae' && oae === 'no_pasa') ||
+            (tipoExamen === 'aabr' && aabr === 'anormal')
+        )) {
             accionesProtocolo += `<div class="alert alert-warning">
-                ⚠️ Tiene 3 meses y no pasó el OAE. Debe realizarse un AABR inmediatamente.
+                ⚠️ Tiene 3 meses y no pasó el examen (${tipoExamen.toUpperCase()}). Debe realizarse un AABR inmediatamente.
             </div>`;
         }
 
@@ -149,11 +158,37 @@ function evaluarRiesgo() {
 
     accionesProtocolo += `</div></div>`;
 
+    // --- Recomendaciones adicionales (independientes del protocolo) ---
+    let recomendacionesExtras = '<div class="card action-card mt-3"><div class="card-body">';
+    recomendacionesExtras += `<h5><i class="fas fa-lightbulb me-2"></i>💡 Recomendaciones adicionales</h5>`;
+
+    // Si pasó examen pero tiene factores de riesgo
+    if (((tipoExamen === 'oae' && oae === 'pasa') || (tipoExamen === 'aabr' && aabr === 'normal')) &&
+        (antecedentes === 'si' || infecciones === 'si' || ototoxicos === 'si' || ucin === 'si')) {
+        recomendacionesExtras += `<div class="alert alert-info">
+            Aunque pasó el examen, existen factores de riesgo. Se recomienda seguimiento auditivo cada 6 meses hasta los 3 años.
+        </div>`;
+    }
+
+    // Si el resultado fue parcial o inconcluso
+    if ((tipoExamen === 'oae' && oae === 'parcial') || (tipoExamen === 'aabr' && aabr === 'inconcluso')) {
+        recomendacionesExtras += `<div class="alert alert-warning">
+            El resultado es parcial/inconcluso. Repetir examen en 2–4 semanas para confirmar diagnóstico.
+        </div>`;
+    }
+
+    // Siempre mostrar signos de alarma para padres
+    recomendacionesExtras += `<div class="alert alert-secondary">
+        👶 Signos de alarma: No responde a sonidos fuertes a los 3 meses, no balbucea a los 6 meses, no reconoce su nombre a los 9 meses, no dice palabras simples al año.
+    </div>`;
+
+    recomendacionesExtras += `</div></div>`;
+
     // Mostrar resultados
     document.getElementById('valorRiesgo').textContent = `${porcentajeRiesgo}% - RIESGO ${nivelRiesgo}`;
     document.getElementById('recomendacion').textContent = recomendacion;
     document.getElementById('factores').innerHTML = factoresRiesgo.join('');
-    document.getElementById('accionesProtocolo').innerHTML = accionesProtocolo;
+    document.getElementById('accionesProtocolo').innerHTML = accionesProtocolo + recomendacionesExtras;
 
     const resultadoDiv = document.getElementById('resultado');
     resultadoDiv.className = `card shadow-lg ${claseCSS} fade-in`;
