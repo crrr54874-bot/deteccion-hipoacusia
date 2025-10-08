@@ -29,6 +29,12 @@ function evaluarRiesgo() {
     const ototoxicos = document.getElementById('ototoxicos').value;
     const ucin = document.getElementById('ucin').value;
 
+    // Validación de edad (máximo 6 meses)
+    if (edadBebe < 0 || edadBebe > 6) {
+        alert('La edad del bebé debe estar entre 0 y 6 meses.');
+        return;
+    }
+
     // Validación de campos generales
     if (!tipoExamen || !prematuridad || !antecedentes || !infecciones || !ototoxicos || !ucin) {
         alert('Por favor, complete todos los campos antes de evaluar el riesgo.');
@@ -111,55 +117,53 @@ function evaluarRiesgo() {
     } else if (porcentajeRiesgo >= 16) {
         accionesProtocolo += `<div class="alert alert-warning">⚠️ Riesgo medio: debe repetirse evaluación y mantener seguimiento estrecho.</div>`;
     } else {
-        // 🟢 Bajo riesgo: reglas por edad
+        // 🟢 Bajo riesgo: reglas por edad (solo hasta 6 meses)
         if (edadBebe < 1) {
             accionesProtocolo += `<div class="alert alert-success">✅ Primer tamizaje cumplido con resultado normal.</div>`;
         } else if (edadBebe <= 3) {
             accionesProtocolo += `<div class="alert alert-success">✅ Dentro del protocolo adecuado. Seguimiento rutinario.</div>`;
-        } else if (edadBebe <= 6) {
-            accionesProtocolo += `<div class="alert alert-success">✅ Protocolo cumplido, continuar seguimiento.</div>`;
         } else {
-            accionesProtocolo += `<div class="alert alert-success">✅ Protocolo completado.</div>`;
+            accionesProtocolo += `<div class="alert alert-success">✅ Protocolo cumplido, continuar seguimiento.</div>`;
         }
 
-        // --- Reglas adicionales por edad y examen ---
-        if (edadBebe === 12 && (
+        // --- Reglas específicas para el rango de 0-6 meses ---
+        if (edadBebe === 1 && (
             (tipoExamen === 'oae' && oae === 'pasa') ||
             (tipoExamen === 'aabr' && aabr === 'normal')
         )) {
-            accionesProtocolo += `<div class="alert alert-info">📅 Tiene 1 año y pasó el examen (${tipoExamen.toUpperCase()}). Recomendación: regresar en 3 meses para evaluar evolución.</div>`;
+            accionesProtocolo += `<div class="alert alert-info">📅 Tiene 1 mes y pasó el examen (${tipoExamen.toUpperCase()}). Recomendación: continuar seguimiento según protocolo.</div>`;
         }
 
-        if (edadBebe === 24 && (
-            (tipoExamen === 'oae' && oae === 'no_pasa') ||
-            (tipoExamen === 'aabr' && aabr === 'anormal')
+        if (edadBebe === 3 && (
+            (tipoExamen === 'oae' && oae === 'pasa') ||
+            (tipoExamen === 'aabr' && aabr === 'normal')
         )) {
-            accionesProtocolo += `<div class="alert alert-warning">📌 Tiene 2 años y no pasó el examen (${tipoExamen.toUpperCase()}). Recomendación: realizar un segundo examen en 3 meses.</div>`;
+            accionesProtocolo += `<div class="alert alert-info">📅 Tiene 3 meses y pasó el examen (${tipoExamen.toUpperCase()}). Hito importante del protocolo cumplido.</div>`;
         }
 
         if (edadBebe === 3 && (
             (tipoExamen === 'oae' && oae === 'no_pasa') ||
             (tipoExamen === 'aabr' && aabr === 'anormal')
         )) {
-            accionesProtocolo += `<div class="alert alert-warning">⚠️ Tiene 3 meses y no pasó el examen (${tipoExamen.toUpperCase()}). Recomendación: realizar AABR inmediatamente.</div>`;
+            accionesProtocolo += `<div class="alert alert-warning">⚠️ Tiene 3 meses y no pasó el examen (${tipoExamen.toUpperCase()}). Recomendación: realizar evaluación complementaria inmediatamente.</div>`;
         }
 
-        if (edadBebe >= 36 && edadBebe <= 60 && tipoExamen === 'aabr' && aabr === 'anormal') {
-            accionesProtocolo += `<div class="alert alert-danger">🚨 Tiene entre 3 y 5 años y no pasó el AABR. Requiere acciones inmediatas con fonoaudiología.</div>`;
+        if (edadBebe >= 4 && edadBebe <= 6 && tipoExamen === 'aabr' && aabr === 'anormal') {
+            accionesProtocolo += `<div class="alert alert-danger">🚨 Tiene entre 4 y 6 meses y no pasó el AABR. Requiere intervención temprana inmediata.</div>`;
         }
     }
 
     // 🔹 Recomendaciones adicionales integradas aquí mismo
     if (((tipoExamen === 'oae' && oae === 'pasa') || (tipoExamen === 'aabr' && aabr === 'normal')) &&
         (antecedentes === 'si' || infecciones === 'si' || ototoxicos === 'si' || ucin === 'si')) {
-        accionesProtocolo += `<div class="alert alert-info">ℹ️ Aunque pasó el examen, existen factores de riesgo. Recomendación: seguimiento auditivo cada 6 meses hasta los 3 años.</div>`;
+        accionesProtocolo += `<div class="alert alert-info">ℹ️ Aunque pasó el examen, existen factores de riesgo. Recomendación: seguimiento auditivo cada 3 meses hasta completar el primer año.</div>`;
     }
 
     if ((tipoExamen === 'oae' && oae === 'parcial') || (tipoExamen === 'aabr' && aabr === 'inconcluso')) {
         accionesProtocolo += `<div class="alert alert-warning">⚠️ Resultado parcial/inconcluso. Recomendación: repetir examen en 2–4 semanas para confirmar diagnóstico.</div>`;
     }
 
-    accionesProtocolo += `<div class="alert alert-secondary">👶 Signos de alarma: No responde a sonidos fuertes (3 meses), no balbucea (6 meses), no reconoce su nombre (9 meses), no dice palabras simples (12 meses).</div>`;
+    accionesProtocolo += `<div class="alert alert-secondary">👶 Signos de alarma en primeros 6 meses: No responde a sonidos fuertes (1-3 meses), no balbucea (4-6 meses), no gira la cabeza hacia sonidos (3-6 meses).</div>`;
 
     accionesProtocolo += `</div></div>`;
 
