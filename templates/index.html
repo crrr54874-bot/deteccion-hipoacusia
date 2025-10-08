@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Detección Temprana - Protocolo 1-3-6 Colombia</title>
+    <title>Sistema de Detección Temprana - Protocolo 1-3-6 OMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -59,10 +59,10 @@
                         
                         <div class="mb-4">
                             <label for="tipoExamen" class="form-label"><i class="fas fa-file-medical me-2"></i>Tipo de examen auditivo realizado:</label>
-                            <select class="form-select form-select-lg" id="tipoExamen" onchange="mostrarResultadoExamen()">
+                            <select id="tipoExamen" class="form-select" onchange="mostrarResultadoExamen()">
                                 <option value="">Seleccione el tipo de examen</option>
                                 <option value="oae">OAE (Otoemisiones Acústicas)</option>
-                                <option value="aabr">AABR (Respuesta Auditiva del Tronco Cerebral)</option>
+                                <option value="peaa">PEAA (Potenciales Evocados Auditivos Automatizados)</option>
                             </select>
                         </div>
 
@@ -76,13 +76,13 @@
                             </select>
                         </div>
 
-                        <div id="resultadoAABR" class="mb-4" style="display: none;">
-                            <label for="aabr" class="form-label"><i class="fas fa-brain me-2"></i>Resultado AABR:</label>
-                            <select class="form-select form-select-lg" id="aabr">
-                                <option value="">Seleccione el resultado</option>
+                        <div id="resultadoPEAA" style="display: none;">
+                            <label class="form-label">Resultado PEAA:</label>
+                            <select id="peaa" class="form-select">
+                                <option value="">Seleccione resultado</option>
                                 <option value="normal">Normal</option>
-                                <option value="anormal">Anormal</option>
                                 <option value="inconcluso">Inconcluso</option>
+                                <option value="anormal">Anormal</option>
                             </select>
                         </div>
 
@@ -105,7 +105,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="infecciones" class="form-label"><i class="fas fa-virus me-2"></i>Infecciones prenatales:</label>
+                                <label for="infecciones" class="form-label"><i class="fas fa-virus me-2"></i>Infecciones prenatales y perinatales:</label>
                                 <select class="form-select" id="infecciones">
                                     <option value="">Seleccione una opción</option>
                                     <option value="si">Sí</option>
