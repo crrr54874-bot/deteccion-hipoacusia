@@ -59,11 +59,11 @@
                         
                         <div class="mb-4">
                             <label for="tipoExamen" class="form-label"><i class="fas fa-file-medical me-2"></i>Tipo de examen auditivo realizado:</label>
-                            <select class="form-select form-select-lg" id="tipoExamen" onchange="mostrarResultadoExamen()">
-                                <option value="">Seleccione el tipo de examen</option>
-                                <option value="oae">OAE (Otoemisiones Acústicas)</option>
-                                <option value="aabr">AABR (Respuesta Auditiva del Tronco Cerebral)</option>
-                            </select>
+                                <select id="tipoExamen" class="form-select" onchange="mostrarResultadoExamen()">
+                                    <option value="">Seleccione el tipo de examen</option>
+                                    <option value="oae">OAE (Otoemisiones Acústicas)</option>
+                                    <option value="peaa">PEAA (Potenciales Evocados Auditivos Automatizados)</option>
+                                </select>   
                         </div>
 
                         <div id="resultadoOAE" class="mb-4" style="display: none;">
@@ -76,13 +76,13 @@
                             </select>
                         </div>
 
-                        <div id="resultadoAABR" class="mb-4" style="display: none;">
-                            <label for="aabr" class="form-label"><i class="fas fa-brain me-2"></i>Resultado AABR:</label>
-                            <select class="form-select form-select-lg" id="aabr">
-                                <option value="">Seleccione el resultado</option>
+                        <div id="resultadoPEAA" style="display: none;">
+                            <label class="form-label">Resultado PEAA:</label>
+                            <select id="peaa" class="form-select">
+                                <option value="">Seleccione resultado</option>
                                 <option value="normal">Normal</option>
-                                <option value="anormal">Anormal</option>
                                 <option value="inconcluso">Inconcluso</option>
+                                <option value="anormal">Anormal</option>
                             </select>
                         </div>
 
@@ -105,7 +105,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="infecciones" class="form-label"><i class="fas fa-virus me-2"></i>Infecciones prenatales:</label>
+                                <label for="infecciones" class="form-label"><i class="fas fa-virus me-2"></i>Infecciones prenatales y perinatales:</label>
                                 <select class="form-select" id="infecciones">
                                     <option value="">Seleccione una opción</option>
                                     <option value="si">Sí</option>
